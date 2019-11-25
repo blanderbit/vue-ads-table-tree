@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import App from './TableContainerApp';
+import App from './GroupedTableApp';
 
 Vue.config.productionTip = false;
 
