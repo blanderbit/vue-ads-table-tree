@@ -1,12 +1,19 @@
 // TODO how to handle grouped data for async data
 
 export default {
+    data () {
+        return {
+            groupRows: [],
+        };
+    },
+
     computed: {
         groupedRows () {
             if (this.paginatedRows.length === 0) {
                 return this.paginatedRows;
             }
 
+            // this.groupRows = [];
             return this.groupingRows(this.paginatedRows, 0);
         },
     },
@@ -72,6 +79,7 @@ export default {
             };
 
             this.initRow(groupRow, 0, groupLength, column);
+            this.groupRows.push(groupRow);
 
             return groupRow;
         },
