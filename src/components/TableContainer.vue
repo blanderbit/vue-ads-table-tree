@@ -114,8 +114,7 @@ export default {
         },
 
         selectable: {
-            type: Boolean,
-            default: false,
+            type: String,
         },
 
         classes: {
