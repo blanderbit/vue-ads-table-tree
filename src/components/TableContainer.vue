@@ -45,6 +45,7 @@
             @total-filtered-rows-change="totalFilteredRowsChanged"
             @export="exportTable"
             @selection-change="selectionChanged"
+            @checkbox-value-changed="checkboxValueChanged"
         >
             <template #loading>
                 <slot name="loading"></slot>
@@ -263,6 +264,10 @@ export default {
 
         totalFilteredRowsChanged (total) {
             this.total = total;
+        },
+
+        checkboxValueChanged (checked) {
+            this.$emit('checkbox-value-changed', checked);
         },
     },
 };
