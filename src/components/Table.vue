@@ -6,30 +6,29 @@
     >
         <!-- TABLE HEADER -->
         <thead>
-            <tr
-                :class="headerRowClasses"
-            >
-                <vue-ads-header-cell
+            <tr :class="headerRowClasses">
+                <component
+                    class="vue-ads-cursor-pointer"
                     v-for="(column, key) in nonGroupedColumns"
                     :key="key"
+                    :is="
+                        column.isSlot ? 'vue-ads-header-cell-slot' : 'vue-ads-header-cell'
+                    "
                     :column="column"
                     :column-index="key"
                     :css-processor="cssProcessor"
                     :sort-icon-slot="sortIconSlot"
                     @sort="sort"
                     @group="group"
-                />
+                >
+                    <input v-if="column.isSlot" @change="emitEvent" type="checkbox" />
+                </component>
             </tr>
         </thead>
         <!-- TABLE ROWS -->
         <tbody>
-            <tr
-                v-if="infoVisible"
-            >
-                <td
-                    :class="infoClasses"
-                    :colspan="nonGroupedColumns.length"
-                >
+            <tr v-if="infoVisible">
+                <td :class="infoClasses" :colspan="nonGroupedColumns.length">
                     <span v-if="loading">
                         <slot name="loading">Loading...</slot>
                     </span>
@@ -38,10 +37,7 @@
                     </span>
                 </td>
             </tr>
-            <template
-                v-else
-                v-for="(row, rowKey) in flattenedRows"
-            >
+            <template v-else v-for="(row, rowKey) in flattenedRows">
                 <vue-ads-row
                     v-if="!row._meta.groupColumn"
                     :key="rowKey"
@@ -86,6 +82,7 @@ import flatten from '../mixins/flatten';
 import exportData from '../mixins/exportData';
 import selection from '../mixins/selection';
 
+import VueAdsHeaderCellSlot from './HeaderCellSlot';
 import VueAdsHeaderCell from './HeaderCell';
 import VueAdsRow from './Row.vue';
 import VueAdsGroupRow from './GroupRow.vue';
@@ -105,6 +102,7 @@ export default {
 
     components: {
         VueAdsHeaderCell,
+        VueAdsHeaderCellSlot,
         VueAdsRow,
         VueAdsGroupRow,
     },
@@ -143,7 +141,13 @@ export default {
 
     methods: {
         totalVisibleRowsChanged (totalVisibleRows) {
-            this.cssProcessor.totalRows = totalVisibleRows === 0 ? 2 : totalVisibleRows + 1;
+            this.cssProcessor.totalRows =
+        totalVisibleRows === 0 ? 2 : totalVisibleRows + 1;
+        },
+
+        //eslint-disable-next-line
+        emitEvent ({ target: { checked }}) {
+            this.$emit('checkbox-value-changed', checked);
         },
     },
 };
