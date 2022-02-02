@@ -73,6 +73,11 @@ export default {
                     'vue-ads-select-none': true,
                 } : {},
                 this.row._meta.selected ? this.cssProcessor.classes.selected : {},
+                this.row.exactMatch ? {
+                    'bg-blue-200': true,
+                    'vue-ads-bg-white': false,
+                    'vue-ads-exact-match': true,
+                } : {},
             );
         },
     },

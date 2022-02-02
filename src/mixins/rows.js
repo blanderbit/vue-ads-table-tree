@@ -38,6 +38,10 @@ export default {
         },
 
         initRow (row, parent, index, groupColumn = null) {
+            if (!row.hasOwnProperty('exactMatch')) {
+                Vue.set(row, 'exactMatch', false);
+            }
+
             if (!row.hasOwnProperty('_children')) {
                 Vue.set(row, '_children', []);
             }

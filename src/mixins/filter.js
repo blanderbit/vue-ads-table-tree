@@ -33,6 +33,20 @@ export default {
 
             // Always execute because of the children filtering.
             let filteredRows = Array.from(this.filteredCurrentRows).filter(this.rowMatch);
+            const exactMatchRows = filteredRows
+                .map((item, idx) => ({
+                    ...item,
+                    originalRowIdx: idx,
+                }))
+                .filter((row) => row.exactMatch);
+
+            if (exactMatchRows.length) {
+                exactMatchRows.forEach((row) => {
+                    this.arrayMove(filteredRows, row.originalRowIdx, 0);
+                    filteredRows[0]._meta.index = 0;
+                    filteredRows[row.originalRowIdx]._meta.index = row.originalRowIdx;
+                });
+            }
 
             if (this.isFiltering) {
                 return filteredRows;
@@ -43,6 +57,13 @@ export default {
     },
 
     methods: {
+        arrayMove (input, from, to) {
+            let numberOfDeletedElm = 1;
+            const elm = input.splice(from, numberOfDeletedElm)[0];
+            numberOfDeletedElm = 0;
+            input.splice(to, numberOfDeletedElm, elm);
+        },
+
         async filterChanged () {
             this.clearSelection();
 
@@ -77,6 +98,10 @@ export default {
             return Object.keys(row)
                 .filter(rowKey => this.filterColumnProperties.includes(rowKey))
                 .filter(filterKey => this.filterRegex.test(row[filterKey]))
+                .map(filterKey => {
+                    row.exactMatch = row[filterKey] === this.filter;
+                    return filterKey;
+                })
                 .length > 0;
         },
     },

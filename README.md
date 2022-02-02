@@ -64,6 +64,7 @@ Columns are listed in a column array as plain objects and can have the following
 - `groupCollapsable`: *(type: boolean, default: `true`)* Can the subrows of the groups be expanded and collapsed.
 - `hideOnGroup`: *(type: boolean, default: `true` if no `groupedBy` property is set)* Hide the column if the rows are grouped by this column.
 - `groupBy`: *(type: Function)* This function convert the cell value to another value. The row will be grouped by the returned value.
+
 It has one parameter:
     - `value`: *(type: mixed)* The default cell value.
 
@@ -80,6 +81,7 @@ Rows are listed in a row array as plain objects. Each object contains the row da
     - `row`: *(type: Object)* A vue based object for adding classes.
     - `<column-selector>`: *(type: Object)* A vue based object for adding classes. The column selector works as explained in [styling](#styling),
       without the use of slashes to distinguish columns and rows.
+- `exactMatch`: *(type: boolean, default: `false`)* Indicates row that exactly matches a filter.
 
 ### <a name="styling"></a>Styling
 All styling is done via a plain object. It contains a selector for a row/column/cell as key and a vue based object that contains classes.

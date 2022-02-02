@@ -28,7 +28,10 @@ export default {
 
     methods: {
         clearSelection () {
-            this.flatten(this.currentRows).forEach(row => row._meta.selected = false);
+            this.flatten(this.currentRows).forEach(row => {
+                row._meta.selected = false;
+                row.exactMatch = false;
+            });
         },
 
         selectRows (rows) {
