@@ -30,6 +30,7 @@ export default {
         clearSelection () {
             this.flatten(this.currentRows).forEach(row => {
                 row._meta.selected = false;
+                row._meta.index = row._meta.originalIndex;
                 row.exactMatch = false;
             });
         },

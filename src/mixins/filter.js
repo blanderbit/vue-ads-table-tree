@@ -32,19 +32,25 @@ export default {
             }
 
             // Always execute because of the children filtering.
-            let filteredRows = Array.from(this.filteredCurrentRows).filter(this.rowMatch);
+            let filteredRows = Array.from(this.filteredCurrentRows)
+                .filter(this.rowMatch)
+                .map((row, idx) => ({
+                    ...row,
+                    _meta: {
+                        ...row._meta,
+                        originalIndex: idx,
+                    },
+                }));
+
             const exactMatchRows = filteredRows
-                .map((item, idx) => ({
-                    ...item,
-                    originalRowIdx: idx,
-                }))
                 .filter((row) => row.exactMatch);
 
             if (exactMatchRows.length) {
                 exactMatchRows.forEach((row) => {
-                    this.arrayMove(filteredRows, row.originalRowIdx, 0);
+                    const rowMeta = row._meta;
+                    this.arrayMove(filteredRows, rowMeta.originalIndex, 0);
                     filteredRows[0]._meta.index = 0;
-                    filteredRows[row.originalRowIdx]._meta.index = row.originalRowIdx;
+                    filteredRows[rowMeta.originalIndex]._meta.index = rowMeta.originalIndex;
                 });
             }
 
