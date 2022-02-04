@@ -64,7 +64,6 @@ Columns are listed in a column array as plain objects and can have the following
 - `groupCollapsable`: *(type: boolean, default: `true`)* Can the subrows of the groups be expanded and collapsed.
 - `hideOnGroup`: *(type: boolean, default: `true` if no `groupedBy` property is set)* Hide the column if the rows are grouped by this column.
 - `groupBy`: *(type: Function)* This function convert the cell value to another value. The row will be grouped by the returned value.
-
 It has one parameter:
     - `value`: *(type: mixed)* The default cell value.
 
