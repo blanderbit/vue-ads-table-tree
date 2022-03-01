@@ -80,7 +80,7 @@ Rows are listed in a row array as plain objects. Each object contains the row da
     - `row`: *(type: Object)* A vue based object for adding classes.
     - `<column-selector>`: *(type: Object)* A vue based object for adding classes. The column selector works as explained in [styling](#styling),
       without the use of slashes to distinguish columns and rows.
-- `exactMatch`: *(type: boolean, default: `false`)* Indicates row that exactly matches a filter.
+- `_exactMatch`: *(type: boolean, default: `false`)* Indicates row that exactly matches a filter.
 
 ### <a name="styling"></a>Styling
 All styling is done via a plain object. It contains a selector for a row/column/cell as key and a vue based object that contains classes.

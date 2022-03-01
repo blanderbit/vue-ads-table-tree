@@ -38,8 +38,8 @@ export default {
         },
 
         initRow (row, parent, index, groupColumn = null) {
-            if (!row.hasOwnProperty('exactMatch')) {
-                Vue.set(row, 'exactMatch', false);
+            if (!row.hasOwnProperty('_exactMatch')) {
+                Vue.set(row, '_exactMatch', false);
             }
 
             if (!row.hasOwnProperty('_children')) {
@@ -65,6 +65,7 @@ export default {
                     index,
                     groupColumn,
                     selected: false,
+                    originalIndex: index,
                 });
             }
         },

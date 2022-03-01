@@ -32,18 +32,15 @@ export default {
             }
 
             // Always execute because of the children filtering.
-            let filteredRows = Array.from(this.filteredCurrentRows)
-                .filter(this.rowMatch)
-                .map((row, idx) => ({
-                    ...row,
-                    _meta: {
-                        ...row._meta,
-                        originalIndex: idx,
-                    },
-                }));
+            const filteredRows = Array.from(this.filteredCurrentRows)
+                .filter(this.rowMatch);
+
+            filteredRows.forEach((filterRow, idx) => {
+                filteredRows[idx]._meta.originalIndex = idx;
+            });
 
             const exactMatchRows = filteredRows
-                .filter((row) => row.exactMatch);
+                .filter((row) => row._exactMatch);
 
             if (exactMatchRows.length) {
                 exactMatchRows.forEach((row) => {
@@ -63,11 +60,11 @@ export default {
     },
 
     methods: {
-        arrayMove (input, from, to) {
+        arrayMove (arr, from, to) {
             let numberOfDeletedElm = 1;
-            const elm = input.splice(from, numberOfDeletedElm)[0];
+            const elm = arr.splice(from, numberOfDeletedElm)[0];
             numberOfDeletedElm = 0;
-            input.splice(to, numberOfDeletedElm, elm);
+            arr.splice(to, numberOfDeletedElm, elm);
         },
 
         async filterChanged () {
@@ -101,11 +98,19 @@ export default {
                 return true;
             }
 
+            let filterProperty = null;
+            Object.entries(row).forEach((arr) => {
+                if (arr[1] === this.filter) {
+                    filterProperty = arr[0];
+                }
+            });
+
             return Object.keys(row)
                 .filter(rowKey => this.filterColumnProperties.includes(rowKey))
                 .filter(filterKey => this.filterRegex.test(row[filterKey]))
                 .map(filterKey => {
-                    row.exactMatch = row[filterKey] === this.filter;
+                    row._exactMatch = row[filterKey] === this.filter;
+                    row._meta.filterProperty = filterProperty;
                     return filterKey;
                 })
                 .length > 0;
