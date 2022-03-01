@@ -44,12 +44,15 @@ export default {
 
     computed: {
         cellClasses () {
+            const isExactMatch = this.row._exactMatch &&
+              this.column.property === (this.row._meta && this.row._meta.filterProperty);
             return Object.assign(
                 this.cssProcessor.process(null, this.columnIndex, this.column),
                 this.cssProcessor.process(this.rowIndex + 1, this.columnIndex, this.row, this.column),
                 this.cssProcessor.processFixed(this.row._classes, this.columnIndex, this.row, this.column),
                 this.row._exactMatch ? {
-                    'bg-yellow-500': this.column.property === (this.row._meta && this.row._meta.filterProperty),
+                    'bg-yellow-500': isExactMatch,
+                    'cell-exact-match': isExactMatch,
                 } : {},
             );
         },
