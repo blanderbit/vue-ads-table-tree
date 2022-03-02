@@ -33,21 +33,22 @@ export default {
 
             // Always execute because of the children filtering.
             const filteredRows = Array.from(this.filteredCurrentRows)
+                .map((row, idx) => {
+                    row._meta.originalIndex = idx;
+                    return row;
+                })
                 .filter(this.rowMatch);
-
-            filteredRows.forEach((filterRow, idx) => {
-                filteredRows[idx]._meta.originalIndex = idx;
-            });
 
             const exactMatchRows = filteredRows
                 .filter((row) => row._exactMatch);
 
             if (exactMatchRows.length) {
                 exactMatchRows.forEach((row) => {
-                    const rowMeta = row._meta;
-                    this.arrayMove(filteredRows, rowMeta.originalIndex, 0);
-                    filteredRows[0]._meta.index = 0;
-                    filteredRows[rowMeta.originalIndex]._meta.index = rowMeta.originalIndex;
+                    this.arrayMove(filteredRows, row._meta.originalIndex, 0);
+                });
+                // Set actual index, do not keep old value.
+                filteredRows.forEach((_, idx) => {
+                    filteredRows[idx]._meta.index = idx;
                 });
             }
 
@@ -65,6 +66,9 @@ export default {
             const elm = arr.splice(from, numberOfDeletedElm)[0];
             numberOfDeletedElm = 0;
             arr.splice(to, numberOfDeletedElm, elm);
+            if (!arr[0]) {
+                arr.splice(0, 1);
+            }
         },
 
         async filterChanged () {
