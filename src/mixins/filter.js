@@ -98,19 +98,15 @@ export default {
                 return true;
             }
 
-            let filterProperty = null;
-            Object.entries(row).forEach((arr) => {
-                if (arr[1] === this.filter) {
-                    filterProperty = arr[0];
-                }
-            });
-
             return Object.keys(row)
                 .filter(rowKey => this.filterColumnProperties.includes(rowKey))
                 .filter(filterKey => this.filterRegex.test(row[filterKey]))
                 .map(filterKey => {
-                    row._exactMatch = row[filterKey] === this.filter;
-                    row._meta.filterProperty = filterProperty;
+                    row._exactMatch = row[filterKey].toString() === this.filter;
+                    row._meta.filterProperty =
+                      row[filterKey].toString() === this.filter
+                          ? filterKey 
+                          : null;
                     return filterKey;
                 })
                 .length > 0;

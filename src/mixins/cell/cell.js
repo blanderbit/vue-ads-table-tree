@@ -50,9 +50,9 @@ export default {
                 this.cssProcessor.process(null, this.columnIndex, this.column),
                 this.cssProcessor.process(this.rowIndex + 1, this.columnIndex, this.row, this.column),
                 this.cssProcessor.processFixed(this.row._classes, this.columnIndex, this.row, this.column),
-                this.row._exactMatch ? {
-                    'bg-yellow-500': isExactMatch,
-                    'cell-exact-match': isExactMatch,
+                isExactMatch ? {
+                    'bg-yellow-500': true,
+                    'cell-exact-match': true,
                 } : {},
             );
         },
