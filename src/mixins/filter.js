@@ -4,6 +4,10 @@ export default {
             type: String,
             default: '',
         },
+        exactMatch: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     watch: {
@@ -33,23 +37,10 @@ export default {
 
             // Always execute because of the children filtering.
             const filteredRows = Array.from(this.filteredCurrentRows)
-                .map((row, idx) => {
-                    row._meta.originalIndex = idx;
-                    return row;
-                })
                 .filter(this.rowMatch);
 
-            const exactMatchRows = filteredRows
-                .filter((row) => row._exactMatch);
-
-            if (exactMatchRows.length) {
-                exactMatchRows.forEach((row) => {
-                    this.arrayMove(filteredRows, row._meta.originalIndex, 0);
-                });
-                // Set actual index, do not keep old value.
-                filteredRows.forEach((_, idx) => {
-                    filteredRows[idx]._meta.index = idx;
-                });
+            if (this.isFiltering && this.exactMatch) {
+                this.handleExactMatch(filteredRows);
             }
 
             if (this.isFiltering) {
@@ -61,16 +52,6 @@ export default {
     },
 
     methods: {
-        arrayMove (arr, from, to) {
-            let numberOfDeletedElm = 1;
-            const elm = arr.splice(from, numberOfDeletedElm)[0];
-            numberOfDeletedElm = 0;
-            arr.splice(to, numberOfDeletedElm, elm);
-            if (!arr[0]) {
-                arr.splice(0, 1);
-            }
-        },
-
         async filterChanged () {
             this.clearSelection();
 
@@ -79,6 +60,45 @@ export default {
             if (this.unresolved) {
                 await this.handleUnresolved();
             }
+        },
+
+        handleExactMatch (filteredRows) {
+            const exactMatchDictionary = new Map();
+            let counter = 0;
+            filteredRows
+                .forEach((row, idx) => {
+                    let index = idx;
+                    if (row._exactMatch) {
+                        index = counter;
+                        counter++;
+                    }
+                    exactMatchDictionary.set(row, {
+                        originalIndex: row._meta.index,
+                        index,
+                        _exactMatch: row._exactMatch,
+                    });
+                });
+
+            let maxExactMatchIndex = null;
+            exactMatchDictionary.forEach((value) => {
+                if (value._exactMatch && maxExactMatchIndex <= value.index) {
+                    maxExactMatchIndex = value.index;
+                }
+            });
+
+            maxExactMatchIndex = maxExactMatchIndex + 1;
+            exactMatchDictionary.forEach((value) => {
+                if (!value._exactMatch) {
+                    value.index = maxExactMatchIndex;
+                    maxExactMatchIndex++;
+                }
+            });
+            filteredRows.forEach((row) => {
+                if (exactMatchDictionary.has(row)) {
+                    const { index } = exactMatchDictionary.get(row);
+                    row._meta.index = index;
+                }
+            });
         },
 
         totalFilteredRowsChanged (total) {
@@ -102,18 +122,20 @@ export default {
                 return true;
             }
 
-            return Object.keys(row)
+            const entities = Object.keys(row)
                 .filter(rowKey => this.filterColumnProperties.includes(rowKey))
-                .filter(filterKey => this.filterRegex.test(row[filterKey]))
-                .map(filterKey => {
+                .filter(filterKey => this.filterRegex.test(row[filterKey]));
+
+            if (this.exactMatch) {
+                entities.forEach(filterKey => {
                     row._exactMatch = row[filterKey].toString() === this.filter;
                     row._meta.filterProperty =
-                      row[filterKey].toString() === this.filter
-                          ? filterKey 
-                          : null;
-                    return filterKey;
-                })
-                .length > 0;
+                        row[filterKey].toString() === this.filter
+                            ? filterKey 
+                            : null;
+                });
+            }
+            return entities.length > 0;
         },
     },
 };

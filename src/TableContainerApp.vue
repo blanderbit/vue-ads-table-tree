@@ -9,6 +9,7 @@
             :filter="filter"
             :page="page"
             :selectable="selectable"
+            :exactMatch="true"
             :call-rows="callRows"
             :call-children="callChildren"
             :call-temp-rows="callTempRows"
