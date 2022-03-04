@@ -63,7 +63,7 @@ export default {
         },
 
         handleExactMatch (filteredRows) {
-            const exactMatchDictionary = new Map();
+            const matchDictionary = new Map();
             let exactMatchCounter = 0;
             filteredRows
                 .forEach((row, idx) => {
@@ -72,21 +72,14 @@ export default {
                         index = exactMatchCounter;
                         exactMatchCounter++;
                     }
-                    exactMatchDictionary.set(row, {
+                    matchDictionary.set(row, {
                         index,
                         _exactMatch: row._exactMatch,
                     });
                 });
 
-            let maxExactMatchIndex = 0;
-            exactMatchDictionary.forEach((dictionaryValue) => {
-                if (dictionaryValue._exactMatch && maxExactMatchIndex <= dictionaryValue.index) {
-                    maxExactMatchIndex = dictionaryValue.index;
-                }
-            });
-
-            maxExactMatchIndex = maxExactMatchIndex + 1;
-            exactMatchDictionary.forEach((dictionaryValue) => {
+            let maxExactMatchIndex = exactMatchCounter;
+            matchDictionary.forEach((dictionaryValue) => {
                 if (!dictionaryValue._exactMatch) {
                     dictionaryValue.index = maxExactMatchIndex;
                     maxExactMatchIndex++;
@@ -94,8 +87,8 @@ export default {
             });
 
             filteredRows.forEach((row) => {
-                if (exactMatchDictionary.has(row)) {
-                    const { index } = exactMatchDictionary.get(row);
+                if (matchDictionary.has(row)) {
+                    const { index } = matchDictionary.get(row);
                     row._meta.index = index;
                 }
             });
