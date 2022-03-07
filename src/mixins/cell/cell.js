@@ -46,7 +46,7 @@ export default {
     computed: {
         cellClasses () {
             const isExactMatch = this.row._exactMatch &&
-              this.column.property === (this.row._meta && this.row._meta.filterProperty);
+              this.row._meta.columnsThatExactlyMatchesFilter.includes(this.column.property);
             return Object.assign(
                 this.cssProcessor.process(null, this.columnIndex, this.column),
                 this.cssProcessor.process(this.rowIndex + 1, this.columnIndex, this.row, this.column),

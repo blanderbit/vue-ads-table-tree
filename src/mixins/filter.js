@@ -122,10 +122,9 @@ export default {
             if (this.exactMatch) {
                 entities.forEach(filterKey => {
                     row._exactMatch = row[filterKey].toString() === this.filter;
-                    row._meta.filterProperty =
-                        row[filterKey].toString() === this.filter
-                            ? filterKey 
-                            : null;
+                    if (row[filterKey].toString() === this.filter) {
+                        row._meta.columnsThatExactlyMatchesFilter .push(filterKey);
+                    }
                 });
             }
             return entities.length > 0;

@@ -70,6 +70,7 @@ export default {
                     groupColumn,
                     selected: false,
                     originalIndex: index,
+                    columnsThatExactlyMatchesFilter: [],
                 });
             }
         },
