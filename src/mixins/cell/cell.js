@@ -1,6 +1,5 @@
 import VueAdsChildrenButton from '../../components/ChildrenButton';
-import CSSProcessor from '../../services/CSSProcessor';
-
+import CSSProcessor from '@/services/CSSProcessor';
 
 export default {
     components: {
@@ -46,10 +45,13 @@ export default {
 
     computed: {
         cellClasses () {
+            const isExactMatch = this.row._exactMatch &&
+              this.row._meta.exactMatchColumns.includes(this.column.property);
             return Object.assign(
                 this.cssProcessor.process(null, this.columnIndex, this.column),
                 this.cssProcessor.process(this.rowIndex + 1, this.columnIndex, this.row, this.column),
-                this.cssProcessor.processFixed(this.row._classes, this.columnIndex, this.row, this.column)
+                this.cssProcessor.processFixed(this.row._classes, this.columnIndex, this.row, this.column),
+                isExactMatch ? this.cssProcessor.classes.exactMatch : {},
             );
         },
 

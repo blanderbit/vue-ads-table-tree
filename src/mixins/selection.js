@@ -28,7 +28,23 @@ export default {
 
     methods: {
         clearSelection () {
-            this.flatten(this.currentRows).forEach(row => row._meta.selected = false);
+            this.flatten(this.currentRows).forEach(row => {
+                row._meta.selected = false;
+                this.resetExactMatch(row);
+            });
+        },
+      
+        resetExactMatch (row) {
+            if (row._children.length) {
+                row._children.forEach((childrenRow) => {
+                    this.resetExactMatch(childrenRow);
+                });
+            }
+
+            if (row._meta.index !== row._meta.originalIndex) {
+                row._meta.index = row._meta.originalIndex;
+            }
+            row._exactMatch = false;
         },
 
         selectRows (rows) {

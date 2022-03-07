@@ -87,3 +87,9 @@ export default {
     },
 };
 </script>
+
+<style lang="css">
+.vue-ads-bg-teal-100 .vue-ads-bg-yellow-300 {
+  background: #EFF8C7;
+}
+</style>

@@ -35,6 +35,7 @@
             :rows="rows"
             :filter="debouncedFilter"
             :selectable="selectable"
+            :exactMatch="exactMatch"
             :start="start"
             :end="end"
             :classes="classes"
@@ -118,6 +119,11 @@ export default {
 
         selectable: {
             type: String,
+        },
+
+        exactMatch: {
+            type: Boolean,
+            default: false,
         },
 
         classes: {

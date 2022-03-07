@@ -16,6 +16,10 @@ export default {
     },
     selected: {
         'vue-ads-bg-teal-100': true,
+        'vue-ads-bg-gray-100': false,
+    },
+    exactMatch: {
+        'vue-ads-bg-yellow-300': true,
     },
     'all/': {
         'hover:vue-ads-bg-gray-200': true,

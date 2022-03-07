@@ -4,6 +4,10 @@ export default {
             type: String,
             default: '',
         },
+        exactMatch: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     watch: {
@@ -32,7 +36,12 @@ export default {
             }
 
             // Always execute because of the children filtering.
-            let filteredRows = Array.from(this.filteredCurrentRows).filter(this.rowMatch);
+            const filteredRows = Array.from(this.filteredCurrentRows)
+                .filter(this.rowMatch);
+
+            if (this.isFiltering && this.exactMatch) {
+                this.handleExactMatch(filteredRows);
+            }
 
             if (this.isFiltering) {
                 return filteredRows;
@@ -53,6 +62,38 @@ export default {
             }
         },
 
+        handleExactMatch (filteredRows) {
+            const matchDictionary = new Map();
+            let exactMatchCounter = 0;
+            filteredRows
+                .forEach((row, idx) => {
+                    let index = idx;
+                    if (row._exactMatch) {
+                        index = exactMatchCounter;
+                        exactMatchCounter++;
+                    }
+                    matchDictionary.set(row, {
+                        index,
+                        _exactMatch: row._exactMatch,
+                    });
+                });
+
+            let maxExactMatchIndex = exactMatchCounter;
+            matchDictionary.forEach((dictionaryValue) => {
+                if (!dictionaryValue._exactMatch) {
+                    dictionaryValue.index = maxExactMatchIndex;
+                    maxExactMatchIndex++;
+                }
+            });
+
+            filteredRows.forEach((row) => {
+                if (matchDictionary.has(row)) {
+                    const { index } = matchDictionary.get(row);
+                    row._meta.index = index;
+                }
+            });
+        },
+
         totalFilteredRowsChanged (total) {
             this.$emit('total-filtered-rows-change', total);
         },
@@ -68,16 +109,25 @@ export default {
                 return true;
             }
 
+            const entities = Object.keys(row)
+                .filter(rowKey => this.filterColumnProperties.includes(rowKey))
+                .filter(filterKey => this.filterRegex.test(row[filterKey]));
+
+            if (this.exactMatch) {
+                entities.forEach(filterKey => {
+                    row._exactMatch = row[filterKey].toString() === this.filter;
+                    if (row[filterKey].toString() === this.filter) {
+                        row._meta.exactMatchColumns.push(filterKey);
+                    }
+                });
+            }
+
             if (row._meta.visibleChildren.length > 0) {
                 row._showChildren = true;
-
                 return true;
             }
 
-            return Object.keys(row)
-                .filter(rowKey => this.filterColumnProperties.includes(rowKey))
-                .filter(filterKey => this.filterRegex.test(row[filterKey]))
-                .length > 0;
+            return entities.length > 0;
         },
     },
 };

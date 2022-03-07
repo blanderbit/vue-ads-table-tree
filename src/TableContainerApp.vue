@@ -9,6 +9,7 @@
             :filter="filter"
             :page="page"
             :selectable="selectable"
+            :exactMatch="true"
             :call-rows="callRows"
             :call-children="callChildren"
             :call-temp-rows="callTempRows"
@@ -62,7 +63,7 @@ export default {
     data () {
         let rows = [
             {
-                _id: 'tiger',
+                _id: 'tiger_nixon',
                 name: 'Tiger Nixon',
                 function: 'Office Manager',
                 city: 'Edinburgh',
@@ -116,6 +117,16 @@ export default {
                         budget: 86000,
                     },
                 ],
+            },
+            {
+                _id: 'tiger',
+                name: 'Tiger',
+                function: 'Office Manager',
+                city: 'Edinburgh',
+                id: '5422',
+                since: '2011/04/25',
+                budget: 320800,
+                _selectable: true,
             },
             {
                 name: 'Garrett Winters',

@@ -90,6 +90,7 @@ The latter ones can override the earlier ones:
         - `info`: Style the info row (shown while loading or no rows are found).
         - `group`: Style the group row.
         - `selected`: Style rows selected by end users.
+        - `exactMatch`: Style rows exactly matching the filter.
     - row/column/cell selectors: These selectors are divided by a slash. So you can have a row selector and a column selector. 
     The header row has index 0. The first data row has index 1. Some examples:
         - 'all': select all rows/columns.
@@ -154,6 +155,8 @@ The rows will only expand if needed. You can see it as you pass temporarily rows
 - `filter`: *(type: string, default: `''`)* Filter all row values on by this regex. Beware that if you change the filter,
 the total number of rows will decrease. So it's wisely to set the start index on 0 after you change the filter value.
 Then you will be able to properly display all the filtered rows.
+- `exactMatch`: *(type: boolean, default: `false`)* If true, place rows, exactly matching filter, 
+at the top, and highlight the matching cells.
 - `start`: *(type: number, default: `undefined`)* The start index to show only a slice of the rows.
 - `end`: *(type: number, default: `undefined`)* The end index to show only a slice of the rows.
 - `selectable`: *(type: string, default: `undefined`)* Configure whether rows can be selected and how many.

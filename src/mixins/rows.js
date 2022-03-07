@@ -7,6 +7,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        exactMatch: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     watch: {
@@ -38,6 +42,10 @@ export default {
         },
 
         initRow (row, parent, index, groupColumn = null) {
+            if (this.exactMatch && !row.hasOwnProperty('_exactMatch')) {
+                Vue.set(row, '_exactMatch', false);
+            }
+
             if (!row.hasOwnProperty('_children')) {
                 Vue.set(row, '_children', []);
             }
@@ -61,6 +69,8 @@ export default {
                     index,
                     groupColumn,
                     selected: false,
+                    originalIndex: index,
+                    exactMatchColumns: [],
                 });
             }
         },
