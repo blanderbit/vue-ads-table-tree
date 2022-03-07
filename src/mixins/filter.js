@@ -109,12 +109,6 @@ export default {
                 return true;
             }
 
-            if (row._meta.visibleChildren.length > 0) {
-                row._showChildren = true;
-
-                return true;
-            }
-
             const entities = Object.keys(row)
                 .filter(rowKey => this.filterColumnProperties.includes(rowKey))
                 .filter(filterKey => this.filterRegex.test(row[filterKey]));
@@ -127,6 +121,12 @@ export default {
                     }
                 });
             }
+
+            if (row._meta.visibleChildren.length > 0) {
+                row._showChildren = true;
+                return true;
+            }
+
             return entities.length > 0;
         },
     },
