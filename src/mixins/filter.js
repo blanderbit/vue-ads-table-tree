@@ -123,7 +123,7 @@ export default {
                 entities.forEach(filterKey => {
                     row._exactMatch = row[filterKey].toString() === this.filter;
                     if (row[filterKey].toString() === this.filter) {
-                        row._meta.columnsThatExactlyMatchesFilter .push(filterKey);
+                        row._meta.exactMatchColumns.push(filterKey);
                     }
                 });
             }
