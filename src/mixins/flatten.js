@@ -26,7 +26,10 @@ export default {
                 .reduce((flattenedRows, row) => {
                     return flattenedRows.concat([
                         row,
-                        ...(row && row._showChildren ? this.flatten(row._meta.visibleChildren) : []),
+                        ...(row && row._showChildren ? this.flatten(row._meta.visibleChildren.map((row) => ({
+                            ...row,
+                            _isChildren: true,
+                        }))) : []),
                     ]);
                 }, []);
         },

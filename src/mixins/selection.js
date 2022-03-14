@@ -12,11 +12,15 @@ export default {
                 return true;
             },
         },
+        exactMatch: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data () {
         return {
-            firstSelectedRowId: undefined,
+            firstSelectedRowIndex: null,
         };
     },
 
@@ -56,43 +60,77 @@ export default {
         },
 
         selectRow (event, row, key) {
-            if (! row._selectable) {
+            if (!row._selectable) {
                 return;
             }
 
-            if (event.shiftKey && this.multiSelect) {
-                let flatten = this.flatten(this.currentRows);
-                let indexes = [
-                    row._meta.uniqueIndex,
-                    this.firstSelectedRowIndex,
-                ];
-                let minKey = Object.keys(flatten).find((key) => flatten[key]._meta.uniqueIndex === indexes[0]);
-                let maxKey = Object.keys(flatten).find((key) => flatten[key]._meta.uniqueIndex === indexes[1]);
-                let keys = [
-                    +minKey,
-                    +maxKey,
-                ];
-                [
-                    minKey,
-                    maxKey,
-                ] = keys.sort((a, b) => a - b);
+            let flatten = this.isFiltering
+                ? this.flatten(this.filteredRows)
+                : this.flatten(this.currentRows);
 
-                this.clearSelection();
-                this.selectRows(flatten.slice(minKey, maxKey + 1));
+            const areFlattenRowsHaveExactMatch = flatten.every((flattenRow) => flattenRow._exactMatch)
+                ? false
+                : flatten.some((flattenRow) => flattenRow._exactMatch);
+
+            if (this.exactMatch && this.isFiltering && areFlattenRowsHaveExactMatch) {
+                flatten = this.reOrderFlattenRows(flatten);
+            }
+
+            if (event.shiftKey && this.multiSelect) {
+                this.handleShiftKey(row, flatten);
             } else if (event.ctrlKey) {
-                let oldSelected = row._meta.selected;
-                if (! this.multiSelect) {
-                    this.clearSelection();
-                }
-                this.firstSelectedRowIndex = row._meta.uniqueIndex;
-                row._meta.selected = ! oldSelected;
+                this.handleCtrlKey(row);
             } else {
                 this.clearSelection();
                 this.firstSelectedRowIndex = row._meta.uniqueIndex;
                 row._meta.selected = true;
             }
 
-            this.$emit('selection-change', this.flatten(this.currentRows).filter(row => row._meta.selected));
+            this.$emit('selection-change', flatten.filter(row => row._meta.selected));
+        },
+      
+        handleShiftKey (row, flatten) {
+            const indexes = [
+                row._meta.uniqueIndex,
+                this.firstSelectedRowIndex,
+            ];
+            let minKey = flatten.findIndex((row) => row._meta.uniqueIndex === indexes[0]);
+            let maxKey = flatten.findIndex((row) => row._meta.uniqueIndex === indexes[1]);
+            const keys = [
+                minKey,
+                maxKey,
+            ];
+            [
+                minKey,
+                maxKey,
+            ] = keys.sort((a, b) => a - b);
+            this.clearSelection();
+            this.selectRows(flatten.slice(minKey, maxKey + 1));
+        },
+      
+        handleCtrlKey (row) {
+            let oldSelected = row._meta.selected;
+            if (!this.multiSelect) {
+                this.clearSelection();
+            }
+            this.firstSelectedRowIndex = row._meta.uniqueIndex;
+            row._meta.selected = !oldSelected;
+        },
+
+        reOrderFlattenRows (flatten) {
+            // Since we use exactMatch and update row._meta.index,
+            // to records with an exact match go first,
+            // we need to re-order flatten array.
+            // The rows that don't have children rows come first,
+            // then come those that have ones.
+            const childrenRows = flatten
+                .filter((row) => row._isChildren || row._children.length);
+            const notChildrenRows = flatten
+                .filter((row) => !row._isChildren && !row._children.length);
+            return [
+                ...notChildrenRows,
+                ...childrenRows,
+            ];
         },
     },
 };
