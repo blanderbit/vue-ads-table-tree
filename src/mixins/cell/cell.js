@@ -41,17 +41,28 @@ export default {
             type: Function,
             default: null,
         },
+
+        mixedColor: {
+            type: String,
+            default: null,
+        },
     },
 
     computed: {
-        cellClasses () {
-            const isExactMatch = this.row._exactMatch &&
+        isExactMatch () {
+            return this.row._exactMatch &&
               this.row._meta.exactMatchColumns.includes(this.column.property);
+        },
+
+        cellClasses () {
             return Object.assign(
                 this.cssProcessor.process(null, this.columnIndex, this.column),
                 this.cssProcessor.process(this.rowIndex + 1, this.columnIndex, this.row, this.column),
                 this.cssProcessor.processFixed(this.row._classes, this.columnIndex, this.row, this.column),
-                isExactMatch ? this.cssProcessor.classes.exactMatch : {},
+                this.isExactMatch ? this.cssProcessor.classes.exactMatch : {},
+                this.isExactMatch && this.row._meta.selected && !this.mixedColor
+                    ? this.cssProcessor.classes.selectedAndExactMatch 
+                    : {},
             );
         },
 
@@ -64,6 +75,11 @@ export default {
         style () {
             return {
                 'padding-left': (1 + (this.parent * 1.5)) + 'rem',
+                ...(this.row._meta.selected && this.isExactMatch && this.mixedColor
+                    ? {
+                        'background-color': this.mixedColor, 
+                    }
+                    : {}),
             };
         },
 

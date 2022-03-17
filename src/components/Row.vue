@@ -12,6 +12,7 @@
             :row="row"
             :column="column"
             :css-processor="cssProcessor"
+            :mixed-color="mixedColor"
             @toggle-children="$emit('toggle-children')"
         />
     </tr>
@@ -58,6 +59,11 @@ export default {
             type: Function,
             default: null,
         },
+
+        mixedColor: {
+            type: String,
+            default: null,
+        },
     },
 
     computed: {
@@ -87,9 +93,3 @@ export default {
     },
 };
 </script>
-
-<style lang="css">
-.vue-ads-bg-teal-100 .vue-ads-bg-yellow-300 {
-  background: #EFF8C7;
-}
-</style>

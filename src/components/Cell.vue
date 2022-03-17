@@ -21,3 +21,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.selectedAndExactMatch {
+  background-color: #dbcf5a;
+}
+</style>

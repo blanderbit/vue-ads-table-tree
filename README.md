@@ -91,6 +91,9 @@ The latter ones can override the earlier ones:
         - `group`: Style the group row.
         - `selected`: Style rows selected by end users.
         - `exactMatch`: Style rows exactly matching the filter.
+        - `selectedAndExactMatch`: Style row cells when there is exactly matching the filter and row is selected.
+          This style is active when user overrides either exactMatch class or selected class or even both of these classes.
+          By default, when there is no override, mix 2 bg colors the next classes: `exactMatch` and `selected`.
     - row/column/cell selectors: These selectors are divided by a slash. So you can have a row selector and a column selector. 
     The header row has index 0. The first data row has index 1. Some examples:
         - 'all': select all rows/columns.
