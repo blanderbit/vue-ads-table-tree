@@ -24,6 +24,6 @@ export default {
 
 <style scoped>
 .selectedAndExactMatch {
-  background-color: #dbcf5a;
+  background-color: #EFF8C7;
 }
 </style>

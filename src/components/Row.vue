@@ -12,7 +12,6 @@
             :row="row"
             :column="column"
             :css-processor="cssProcessor"
-            :mixed-color="mixedColor"
             @toggle-children="$emit('toggle-children')"
         />
     </tr>
@@ -57,11 +56,6 @@ export default {
 
         toggleChildrenIconSlot: {
             type: Function,
-            default: null,
-        },
-
-        mixedColor: {
-            type: String,
             default: null,
         },
     },

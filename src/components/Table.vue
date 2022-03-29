@@ -47,7 +47,6 @@
                     :slots="rowSlots"
                     :toggle-children-icon-slot="toggleChildrenIconSlot"
                     :css-processor="cssProcessor"
-                    :mixed-color="mixedColor"
                     @toggle-children="toggleChildren(row)"
                     @click.native="selectRow($event, row, rowKey)"
                 />
@@ -60,7 +59,6 @@
                     :css-processor="cssProcessor"
                     :toggle-children-icon-slot="toggleChildrenIconSlot"
                     :colspan="columns.length"
-                    :mixed-color="mixedColor"
                     @toggle-children="toggleChildren(row)"
                     @disable-group="group"
                     @sort="sort"
@@ -88,9 +86,6 @@ import VueAdsHeaderCellSlot from './HeaderCellSlot';
 import VueAdsHeaderCell from './HeaderCell';
 import VueAdsRow from './Row.vue';
 import VueAdsGroupRow from './GroupRow.vue';
-import tailwindConfig from '../../tailwind.config';
-import { tailwindColors } from '@/constants/tailwind-colors';
-import { mixColors } from '@/utils/utils';
 
 // Todo check if it's possible to increase the key only for non group rows
 // => so even and odd non group rows have the same background
@@ -126,33 +121,6 @@ export default {
         async,
         exportData,
     ],
-
-    data: () => ({
-        mixedColor: null,
-    }),
-
-    mounted () {
-        const tailwindPrefix = tailwindConfig.prefix;
-        const [
-            firstColorName,
-            firstColorWeight,
-        ] = Object.keys(this.classes.selected)
-            .filter((key) => this.classes.selected[key])[0]
-            .replace(`${tailwindPrefix}bg-`, '')
-            .split('-');
-        const [
-            secondColorName,
-            secondColorWeight,
-        ] = Object.keys(this.classes.exactMatch)
-            .filter((key) => this.classes.exactMatch[key])[0]
-            .replace(`${tailwindPrefix}bg-`, '')
-            .split('-');
-        const firstColor = tailwindColors[firstColorName] && tailwindColors[firstColorName][firstColorWeight];
-        const secondColor = tailwindColors[secondColorName] && tailwindColors[secondColorName][secondColorWeight];
-        if (firstColor && secondColor) {
-            this.mixedColor = mixColors(firstColor.slice(1), secondColor.slice(1), 50);
-        }
-    },
 
     computed: {
         totalVisibleRows () {
