@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style scoped>
-.selectedAndExactMatch {
+td.selectedAndExactMatch {
   background-color: #EFF8C7;
 }
 </style>
