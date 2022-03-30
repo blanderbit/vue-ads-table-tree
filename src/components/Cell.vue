@@ -21,3 +21,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+td.selectedAndExactMatch {
+  background-color: #EFF8C7;
+}
+</style>

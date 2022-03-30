@@ -21,6 +21,9 @@ export default {
     exactMatch: {
         'vue-ads-bg-yellow-300': true,
     },
+    selectedAndExactMatch: {
+        selectedAndExactMatch: true,
+    },
     'all/': {
         'hover:vue-ads-bg-gray-200': true,
     },

@@ -90,7 +90,10 @@ The latter ones can override the earlier ones:
         - `info`: Style the info row (shown while loading or no rows are found).
         - `group`: Style the group row.
         - `selected`: Style rows selected by end users.
-        - `exactMatch`: Style rows exactly matching the filter.
+        - `exactMatch`: Style cells exactly matching the filter.
+        - `selectedAndExactMatch`: Style cells exactly matching the filter in selected rows.
+           By default, when the style is active, such cells have `#EFF8C7` background color,
+           which is a mix of background colors used for matching cells and selected rows.
     - row/column/cell selectors: These selectors are divided by a slash. So you can have a row selector and a column selector. 
     The header row has index 0. The first data row has index 1. Some examples:
         - 'all': select all rows/columns.
