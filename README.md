@@ -158,8 +158,9 @@ The rows will only expand if needed. You can see it as you pass temporarily rows
 - `filter`: *(type: string, default: `''`)* Filter all row values on by this regex. Beware that if you change the filter,
 the total number of rows will decrease. So it's wisely to set the start index on 0 after you change the filter value.
 Then you will be able to properly display all the filtered rows.
-- `exactMatch`: *(type: boolean, default: `false`)* If true, place rows, exactly matching filter, 
+- `exactMatch`: *(type: boolean, default: `false`)* If `true`, place rows, exactly matching filter, 
 at the top, and highlight the matching cells.
+- `isExactMatchCaseSensitive`: *(type: boolean, default: `false`)* If `true`, exact match is case-sensitive.
 - `start`: *(type: number, default: `undefined`)* The start index to show only a slice of the rows.
 - `end`: *(type: number, default: `undefined`)* The end index to show only a slice of the rows.
 - `selectable`: *(type: string, default: `undefined`)* Configure whether rows can be selected and how many.

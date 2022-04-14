@@ -8,6 +8,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isExactMatchCaseSensitive: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     watch: {
@@ -115,8 +119,11 @@ export default {
 
             if (this.exactMatch) {
                 entities.forEach(filterKey => {
-                    row._exactMatch = row[filterKey].toString() === this.filter;
-                    if (row[filterKey].toString() === this.filter) {
+                    const isExactMatch = this.isExactMatchCaseSensitive
+                        ? row[filterKey].toString() === this.filter
+                        : row[filterKey].toString().toLowerCase() === this.filter.toLowerCase();
+                    row._exactMatch = isExactMatch;
+                    if (isExactMatch) {
                         row._meta.exactMatchColumns.push(filterKey);
                     }
                 });
