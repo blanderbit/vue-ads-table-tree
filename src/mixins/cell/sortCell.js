@@ -1,62 +1,59 @@
+import AppIcon from "@/components/AppIcon";
+
 export default {
-    props: {
-        sortIconSlot: {
-            type: Function,
-            default: null,
-        },
+  props: {
+    sortIconSlot: {
+      type: Function,
+      default: null,
+    },
+  },
+
+  computed: {
+    sortable() {
+      return [null, true, false].includes(this.column.direction);
     },
 
-    computed: {
-        sortable () {
-            return [
-                null,
-                true,
-                false,
-            ].includes(this.column.direction);
-        },
+    getSortIcon() {
+      if (!this.sortable) {
+        return "";
+      }
 
-        sortIconClasses () {
-            if (!this.sortable) {
-                return {};
-            }
+      if (this.column.direction === null) {
+        return "sort";
+      }
 
-            return {
-                fa: true,
-                'vue-ads-ml-2': true,
-                'fa-sort': this.column.direction === null,
-                'fa-sort-down': this.column.direction === false,
-                'fa-sort-up': this.column.direction === true,
-            };
-        },
+      if (this.column.direction === false) {
+        return "sort-down";
+      }
+
+      if (this.column.direction === true) {
+        return "sort-up";
+      }
     },
+  },
 
-    methods: {
-        sortIcon (createElement) {
-            let iconNode = this.sortIconSlot ?
-                this.sortIconSlot({
-                    direction: this.column.direction,
-                }) :
-                createElement(
-                    'i',
-                    {
-                        class: this.sortIconClasses,
-                    },
-                );
+  methods: {
+    sortIcon(h) {
+      let iconNode = this.sortIconSlot
+        ? this.sortIconSlot({
+            direction: this.column.direction,
+          })
+        : h(AppIcon, {
+            namespace: "fa",
+            icon: this.getSortIcon,
+            additionalClass: "vue-ads-ml-2",
+          });
 
-            return createElement(
-                'span',
-                {
-                    on: {
-                        click: (event) => {
-                            event.stopPropagation();
-                            this.$emit('sort', this.column);
-                        },
-                    },
-                },
-                [
-                    iconNode,
-                ]
-            );
+      return h(
+        "span",
+        {
+          onClick: (event) => {
+            event.stopPropagation();
+            this.$emit("sort", this.column);
+          },
         },
+        [iconNode]
+      );
     },
+  },
 };

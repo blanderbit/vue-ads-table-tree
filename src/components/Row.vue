@@ -1,89 +1,95 @@
 <template>
-    <tr
-        :class="rowClasses"
-    >
-        <vue-ads-cell
-            v-for="(column, key) in columns"
-            :column-slot="columnSlot(column)"
-            :toggle-children-icon-slot="toggleChildrenIconSlot"
-            :key="key"
-            :row-index="rowIndex"
-            :column-index="key"
-            :row="row"
-            :column="column"
-            :css-processor="cssProcessor"
-            @toggle-children="$emit('toggle-children')"
-        />
-    </tr>
+  <tr :class="rowClasses">
+    <vue-ads-cell
+      v-for="(column, key) in columns"
+      :column-slot="columnSlot(column)"
+      :toggle-children-icon-slot="toggleChildrenIconSlot"
+      :key="key"
+      :row-index="rowIndex"
+      :column-index="key"
+      :row="row"
+      :column="column"
+      :css-processor="cssProcessor"
+      @toggle-children="$emit('toggle-children')"
+    />
+  </tr>
 </template>
 
 <script>
-import VueAdsCell from './Cell';
-import CSSProcessor from '../services/CSSProcessor';
+import VueAdsCell from "./Cell";
+import CSSProcessor from "../services/CSSProcessor";
 
 export default {
-    name: 'VueAdsRow',
+  name: "VueAdsRow",
 
-    components: {
-        VueAdsCell,
+  components: {
+    VueAdsCell,
+  },
+
+  props: {
+    row: {
+      type: Object,
+      required: true,
     },
 
-    props: {
-        row: {
-            type: Object,
-            required: true,
-        },
-
-        rowIndex: {
-            type: Number,
-            required: true,
-        },
-
-        columns: {
-            type: Array,
-            required: true,
-        },
-
-        slots: {
-            type: Object,
-            default: () => { return {}; },
-        },
-
-        cssProcessor: {
-            type: CSSProcessor,
-            required: true,
-        },
-
-        toggleChildrenIconSlot: {
-            type: Function,
-            default: null,
-        },
+    rowIndex: {
+      type: Number,
+      required: true,
     },
 
-    computed: {
-        rowClasses () {
-            if (this.row._meta.groupColumn) {
-                return this.cssProcessor.classes.group;
+    columns: {
+      type: Array,
+      required: true,
+    },
+
+    slots: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+
+    cssProcessor: {
+      type: CSSProcessor,
+      required: true,
+    },
+
+    toggleChildrenIconSlot: {
+      type: Function,
+      default: null,
+    },
+  },
+
+  computed: {
+    rowClasses() {
+      if (this.row._meta.groupColumn) {
+        return this.cssProcessor.classes.group;
+      }
+
+      return Object.assign(
+        this.cssProcessor.process(this.rowIndex + 1, null, this.row),
+        this.row._classes
+          ? CSSProcessor.processValue(this.row._classes.row, this.row)
+          : {},
+        this.row._selectable
+          ? {
+              "vue-ads-select-none": true,
             }
-
-            return Object.assign(
-                this.cssProcessor.process(this.rowIndex + 1, null, this.row),
-                this.row._classes ? CSSProcessor.processValue(this.row._classes.row, this.row) : {},
-                this.row._selectable ? {
-                    'vue-ads-select-none': true,
-                } : {},
-                this.row._meta.selected ? this.cssProcessor.classes.selected : {},
-            );
-        },
+          : {},
+        this.row._meta.selected ? this.cssProcessor.classes.selected : {}
+      );
     },
+  },
 
-    methods: {
-        columnSlot (column) {
-            return this.slots[column.property + '_' + (this.row['_id'] || '')] ||
-                this.slots[column.property] ||
-                this.slots['_' + (this.row['_id'] || '')] ||
-                null;
-        },
+  methods: {
+    columnSlot(column) {
+      return (
+        this.slots[column.property + "_" + (this.row["_id"] || "")] ||
+        this.slots[column.property] ||
+        this.slots["_" + (this.row["_id"] || "")] ||
+        null
+      );
     },
+  },
 };
 </script>
