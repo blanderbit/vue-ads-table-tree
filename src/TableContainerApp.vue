@@ -10,6 +10,7 @@
             :page="page"
             :selectable="selectable"
             :exactMatch="true"
+            :isExactMatchCaseSensitive="false"
             :call-rows="callRows"
             :call-children="callChildren"
             :call-temp-rows="callTempRows"
@@ -64,7 +65,7 @@ export default {
         let rows = [
             {
                 _id: 'tiger_nixon',
-                name: 'Tiger Nixon',
+                name: 'AS1',
                 function: 'Office Manager',
                 city: 'Edinburgh',
                 id: '5421',

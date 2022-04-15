@@ -36,6 +36,7 @@
             :filter="debouncedFilter"
             :selectable="selectable"
             :exactMatch="exactMatch"
+            :isExactMatchCaseSensitive="isExactMatchCaseSensitive"
             :start="start"
             :end="end"
             :classes="classes"
@@ -126,6 +127,11 @@ export default {
             default: false,
         },
 
+        isExactMatchCaseSensitive: {
+            type: Boolean,
+            default: false,
+        },
+      
         classes: {
             type: Object,
             default: () => defaultClasses,
