@@ -71,7 +71,7 @@ It has one parameter:
 Rows are listed in a row array as plain objects. Each object contains the row data and meta data. Meta data is prefixed with a `_`:
 - `_id`: *(type: string, default: `''`)* An identifier for this row. This is used to create slots for certain cells on the row.
 - `_children`: *(type: array, default: `[]`)* An array with plain child objects. The structure is the same as the parent list of rows.
-- `_hasChildren`: *(type: boolean, default: `false`)* This is usefull if you want to indicate that the row has children, but you will load them later via an async call.
+- `_hasChildren`: *(type: boolean, default: `false`)* This is useful if you want to indicate that the row has children, but you will load them later via an async call.
 - `_showChildren`: *(type: boolean, default: `false`)* Indicates if the children has to be shown on initialization.
   If this is true, and `_hasChildren` is true, but no `_children` attribute is found, an async call will be initiated to call the children.
 - `_selectable`: *(type: boolean, default: The parent `_selectable` property or if no parent the `selectable` property of the table)* 
@@ -145,7 +145,7 @@ Don't forget to add the `call-children` property to your component. See [propert
 
 If you're sorting/filtering while not all root/child rows are loaded. There is a small problem. We don't know if your sort
 or filter result will be the right one, because not all the data is loaded.
-Therefore the component will call the `call-temp-rows` function you need to pass via the property. See [properties](#table_properties)
+Therefore, the component will call the `call-temp-rows` function you need to pass via the property. See [properties](#table_properties)
 
 Be aware that the result of the function call is send to the table without any additional filtering, sorting or pagination.
 The rows will only expand if needed. You can see it as you pass temporarily rows to the table 

@@ -1,29 +1,36 @@
 <script>
-import cell from '../mixins/cell/cell';
+import cell from "../mixins/cell/cell";
+import { h } from "vue";
 
 export default {
-    name: 'VueAdsCell',
+  name: "VueAdsCell",
 
-    mixins: [
-        cell,
-    ],
+  mixins: [cell],
 
-    render (createElement) {
-        return createElement('td', {
-            class: this.cellClasses,
-            style: this.style,
-        }, [
-            createElement('span', {
-                class: this.titleClasses,
-                on: this.clickEvents,
-            }, this.value(createElement)),
-        ]);
-    },
+  render() {
+    return h(
+      "td",
+      {
+        class: this.cellClasses,
+        style: this.style,
+      },
+      [
+        h(
+          "span",
+          {
+            class: this.titleClasses,
+            onClick: this.clickEvents,
+          },
+          [this.value(h)]
+        ),
+      ]
+    );
+  },
 };
 </script>
 
 <style scoped>
 td.selectedAndExactMatch {
-  background-color: #EFF8C7;
+  background-color: #eff8c7;
 }
 </style>

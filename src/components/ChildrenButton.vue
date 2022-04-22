@@ -1,70 +1,57 @@
 <script>
+import { h } from "vue";
+import AppIcon from "@/components/AppIcon";
+
 export default {
-    name: 'VueAdsChildrenButton',
-
-    props: {
-        expanded: {
-            type: Boolean,
-            required: true,
-        },
-
-        loading: {
-            type: Boolean,
-            required: true,
-        },
-
-        iconSlot: {
-            type: Function,
-            default: null,
-        },
+  name: "VueAdsChildrenButton",
+  props: {
+    expanded: {
+      type: Boolean,
+      required: true,
     },
 
-    computed: {
-        classes () {
-            let classes = {
-                fa: true,
-                'vue-ads-pr-2': true,
-            };
-
-            if (this.loading) {
-                return Object.assign(
-                    classes,
-                    {
-                        fa: true,
-                        'fa-ellipsis-h': true,
-                    }
-                );
-            }
-
-            return Object.assign(
-                classes,
-                {
-                    'vue-ads-cursor-pointer': true,
-                    'fa-plus-square': !this.expanded,
-                    'fa-minus-square': this.expanded,
-                }
-            );
-        },
+    loading: {
+      type: Boolean,
+      required: true,
     },
 
-    render (createElement) {
-        if (this.iconSlot) {
-            return createElement(
-                'span',
-                {},
-                this.iconSlot({
-                    expanded: this.expanded,
-                    loading: this.loading,
-                })
-            );
-        }
-
-        return createElement(
-            'i',
-            {
-                class: this.classes,
-            }
-        );
+    iconSlot: {
+      type: Function,
+      default: null,
     },
+  },
+
+  computed: {
+    classes() {
+      return {
+        "vue-ads-pr-2": true,
+        "vue-ads-cursor-pointer": true,
+      };
+    },
+
+    childrenButtonIcon() {
+      if (this.loading) {
+        return "ellipsis-h";
+      }
+      return this.expanded ? "minus-square" : "plus-square";
+    },
+  },
+
+  render() {
+    if (this.iconSlot) {
+      return h("span", {}, [
+        this.iconSlot({
+          expanded: this.expanded,
+          loading: this.loading,
+        }),
+      ]);
+    }
+
+    return h(AppIcon, {
+      namespace: "fa",
+      icon: this.childrenButtonIcon,
+      additionalClass: this.classes,
+    });
+  },
 };
 </script>
