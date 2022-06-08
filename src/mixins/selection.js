@@ -39,6 +39,7 @@ export default {
         },
       
         resetExactMatch (row) {
+            row._meta.exactMatchColumns = [];
             if (row._children.length) {
                 row._children.forEach((childrenRow) => {
                     this.resetExactMatch(childrenRow);
