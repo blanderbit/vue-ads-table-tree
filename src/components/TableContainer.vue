@@ -1,8 +1,10 @@
 <template>
-    <div>
-        <slot name="top"
-              :filter="filter"
-              :filter-changed="filterChanged"
+    <div class="vue-ads-table-tree-container">
+        <slot
+            v-if="hasTopSlot"
+            name="top"
+            :filter="filter"
+            :filter-changed="filterChanged"
         >
             <div class="vue-ads-flex vue-ads-py-3">
                 <div class="vue-ads-w-3/4"></div>
@@ -27,7 +29,6 @@
                     </vue-json-excel>
                 </div>
             </div>
-
         </slot>
         <vue-ads-table
             ref="table"
@@ -44,6 +45,8 @@
             :call-children="callChildrenFunction"
             :call-temp-rows="callTempRowsFunction"
             :slots="$scopedSlots"
+            :manage-table-properties="manageTableProperties"
+            :fixed-table-head="fixedTableHead"
             @total-filtered-rows-change="totalFilteredRowsChanged"
             @export="exportTable"
             @selection-change="selectionChanged"
@@ -67,7 +70,7 @@
                 :total-items="total"
                 :page="page"
                 :items-per-page="itemsPerPage"
-                :with-input="withPageInput"
+                :with-input="paginationWithPageInput"
                 @page-change="pageChanged"
                 @range-change="rangeChanged"
             />
@@ -164,7 +167,7 @@ export default {
             default: 10,
         },
 
-        withPageInput: {
+        paginationWithPageInput: {
             type: Boolean,
             default: false,
         },
@@ -177,6 +180,21 @@ export default {
         fullExport: {
             type: Boolean,
             default: true,
+        },
+
+        manageTableProperties: {
+            type: Boolean,
+            default: false,
+        },
+
+        hasTopSlot: {
+            type: Boolean,
+            default: true,
+        },
+
+        fixedTableHead: {
+            type: Boolean,
+            default: false,
         },
     },
 

@@ -49,6 +49,9 @@ export default {
                 },
                 this.cssProcessor.process(null, this.columnIndex),
                 this.cssProcessor.process(0, this.columnIndex),
+                {
+                    'vue-ads-bg-white': true,
+                },
             );
         },
 

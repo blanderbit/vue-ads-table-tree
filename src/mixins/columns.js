@@ -7,17 +7,28 @@ export default {
             required: true,
         },
     },
-
+    data () {
+        return {
+            initialColumns: [],
+            checkedColumns: [],
+        };
+    },
     watch: {
         columns: {
             handler: 'columnsChanged',
             immediate: true,
         },
+        checkedColumns (columns) {
+            this.initialColumns = this.initialColumns.map((column) => {
+                column.visible = !!columns.find((checkedColumnProperty) => checkedColumnProperty === column.property);
+                return column;
+            });
+        },
     },
 
     computed: {
         visibleColumns () {
-            return this.columns.filter(column => column.visible);
+            return this.initialColumns.filter(column => column.visible);
         },
 
         columnProperties () {
@@ -56,7 +67,13 @@ export default {
     },
 
     methods: {
+        setCheckedColumns (checkedColumns) {
+            this.checkedColumns = checkedColumns;
+        },
+
         columnsChanged (columns) {
+            this.initialColumns = columns;
+            this.checkedColumns = columns.map((c) => c.property);
             let maxSortOrder = this.maxSortOrder();
 
             columns.forEach(column => {

@@ -1,71 +1,90 @@
 <template>
-    <table
-        :class="tableClasses"
-        class="vue-ads-w-full vue-ads-font-sans"
-        style="border-collapse: collapse;"
-    >
-        <!-- TABLE HEADER -->
-        <thead>
-            <tr :class="headerRowClasses">
-                <component
-                    class="vue-ads-cursor-pointer"
-                    v-for="(column, key) in nonGroupedColumns"
-                    :key="key"
-                    :is="
-                        column.isSlot ? 'vue-ads-header-cell-slot' : 'vue-ads-header-cell'
-                    "
-                    :column="column"
-                    :column-index="key"
-                    :css-processor="cssProcessor"
-                    :sort-icon-slot="sortIconSlot"
-                    @sort="sort"
-                    @group="group"
-                >
-                    <input v-if="column.isSlot" @change="emitEvent" type="checkbox" />
-                </component>
-            </tr>
-        </thead>
-        <!-- TABLE ROWS -->
-        <tbody>
-            <tr v-if="infoVisible">
-                <td :class="infoClasses" :colspan="nonGroupedColumns.length">
-                    <span v-if="loading">
-                        <slot name="loading">Loading...</slot>
-                    </span>
-                    <span v-else>
-                        <slot name="no-rows">No results found.</slot>
-                    </span>
-                </td>
-            </tr>
-            <template v-else v-for="(row, rowKey) in flattenedRows">
-                <vue-ads-row
-                    v-if="!row._meta.groupColumn"
-                    :key="rowKey"
-                    :row="row"
-                    :row-index="rowKey"
-                    :columns="nonGroupedColumns"
-                    :slots="rowSlots"
-                    :toggle-children-icon-slot="toggleChildrenIconSlot"
-                    :css-processor="cssProcessor"
-                    @toggle-children="toggleChildren(row)"
-                    @click.native="selectRow($event, row, rowKey)"
+    <div class="vue-ads-table-tree">
+        <div v-if="manageTableProperties" class="vue-ads-flex vue-ads-justify-end">
+            <div v-click-outside="clickOutsideTablePropertiesArea">
+                <i
+                    @click="toggleTableProperties"
+                    class="fa fa-sliders-h vue-ads-mr-4 vue-ads-mb-2 vue-ads-cursor-pointer"
                 />
-                <vue-ads-group-row
-                    v-else
-                    :key="rowKey"
-                    :row-index="rowKey"
-                    :row="row"
-                    :slots="rowSlots"
-                    :css-processor="cssProcessor"
-                    :toggle-children-icon-slot="toggleChildrenIconSlot"
-                    :colspan="columns.length"
-                    @toggle-children="toggleChildren(row)"
-                    @disable-group="group"
-                    @sort="sort"
+                <table-properties
+                    v-if="isTablePropertiesVisible"
+                    :content-classes="cssProcessor.classes.manageProperties"
+                    :columns="columns"
+                    v-model="checkedColumns"
+                    @setCheckedColumns="setCheckedColumns"
                 />
-            </template>
-        </tbody>
-    </table>
+            </div>
+        </div>
+        <div :class="{ 'vue-ads-fix-table-head': fixedTableHead }">
+            <table
+                :class="tableClasses"
+                class="vue-ads-w-full vue-ads-font-sans"
+                style="border-collapse: collapse;"
+            >
+                <!-- TABLE HEADER -->
+                <thead>
+                    <tr :class="headerRowClasses">
+                        <component
+                            class="vue-ads-cursor-pointer"
+                            v-for="(column, key) in nonGroupedColumns"
+                            :key="key"
+                            :is="
+                                column.isSlot ? 'vue-ads-header-cell-slot' : 'vue-ads-header-cell'
+                            "
+                            :column="column"
+                            :column-index="key"
+                            :css-processor="cssProcessor"
+                            :sort-icon-slot="sortIconSlot"
+                            @sort="sort"
+                            @group="group"
+                        >
+                            <input v-if="column.isSlot" @change="emitEvent" type="checkbox" />
+                        </component>
+                    </tr>
+                </thead>
+                <!-- TABLE ROWS -->
+                <tbody>
+                    <tr v-if="infoVisible">
+                        <td :class="infoClasses" :colspan="nonGroupedColumns.length">
+                            <span v-if="loading">
+                                <slot name="loading">Loading...</slot>
+                            </span>
+                            <span v-else>
+                                <slot name="no-rows">No results found.</slot>
+                            </span>
+                        </td>
+                    </tr>
+                    <template v-else v-for="(row, rowKey) in flattenedRows">
+                        <vue-ads-row
+                            v-if="!row._meta.groupColumn"
+                            :key="rowKey"
+                            :row="row"
+                            :row-index="rowKey"
+                            :columns="nonGroupedColumns"
+                            :slots="rowSlots"
+                            :toggle-children-icon-slot="toggleChildrenIconSlot"
+                            :css-processor="cssProcessor"
+                            @toggle-children="toggleChildren(row)"
+                            @click.native="selectRow($event, row, rowKey)"
+                        />
+                        <vue-ads-group-row
+                            v-else
+                            :key="rowKey"
+                            :row-index="rowKey"
+                            :row="row"
+                            :slots="rowSlots"
+                            :css-processor="cssProcessor"
+                            :toggle-children-icon-slot="toggleChildrenIconSlot"
+                            :colspan="columns.length"
+                            @toggle-children="toggleChildren(row)"
+                            @disable-group="group"
+                            @sort="sort"
+                        />
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -86,6 +105,7 @@ import VueAdsHeaderCellSlot from './HeaderCellSlot';
 import VueAdsHeaderCell from './HeaderCell';
 import VueAdsRow from './Row.vue';
 import VueAdsGroupRow from './GroupRow.vue';
+import TableProperties from '@/components/TableProperties';
 
 // Todo check if it's possible to increase the key only for non group rows
 // => so even and odd non group rows have the same background
@@ -101,12 +121,27 @@ export default {
     name: 'VueAdsTable',
 
     components: {
+        TableProperties,
         VueAdsHeaderCell,
         VueAdsHeaderCellSlot,
         VueAdsRow,
         VueAdsGroupRow,
     },
-
+    props: {
+        manageTableProperties: {
+            type: Boolean,
+            default: false,
+        },
+        fixedTableHead: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    data: () => {
+        return {
+            isTablePropertiesVisible: false,
+        };
+    },
     mixins: [
         rows,
         columns,
@@ -140,6 +175,14 @@ export default {
     },
 
     methods: {
+        clickOutsideTablePropertiesArea () {
+            this.isTablePropertiesVisible = false;
+        },
+
+        toggleTableProperties () {
+            this.isTablePropertiesVisible = !this.isTablePropertiesVisible;
+        },
+
         totalVisibleRowsChanged (totalVisibleRows) {
             this.cssProcessor.totalRows =
         totalVisibleRows === 0 ? 2 : totalVisibleRows + 1;
@@ -152,3 +195,15 @@ export default {
     },
 };
 </script>
+
+<style>
+.vue-ads-fix-table-head {
+  overflow-y: auto;
+  max-height: 380px;
+}
+
+.vue-ads-fix-table-head thead th {
+  position: sticky;
+  top: 0;
+}
+</style>

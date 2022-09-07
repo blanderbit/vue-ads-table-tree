@@ -18,6 +18,7 @@
         "/dist"
     ],
     "scripts": {
+        "postinstall": "cp -Rpf deps/* node_modules/",
         "build": "vue-cli-service build",
         "build:bundle": "vue-cli-service build --target lib --name vue-ads-table-tree ./src/index.js",
         "lint": "vue-cli-service lint",
