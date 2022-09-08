@@ -50,6 +50,7 @@ You can install the package via npm or yarn.
 Columns are listed in a column array as plain objects and can have the following arguments:
 
 - `property`: *(type: string, default: `''`)* The corresponding value will be shown in the column for the given row property. 
+- `width`: *(type: number, default: `undefined`)* Specify the column width. Measured in pixels.
 - `title`: *(type: string, default: `''`)* The title that will be shown in the header. 
 - `filterable`: *(type: boolean, default: `false`)* Is this column filterable?
 - `visible`: *(type: boolean, default: `true`)* Is the column visible? Non-visible columns will not interact.
