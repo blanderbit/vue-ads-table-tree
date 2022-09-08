@@ -20,7 +20,7 @@ export default {
         },
         checkedColumns (columns) {
             this.initialColumns = this.initialColumns.map((column) => {
-                column.visible = !!columns.find((checkedColumnProperty) => checkedColumnProperty === column.property);
+                column.visible = Boolean(columns.find((checkedColumnProperty) => checkedColumnProperty === column.property));
                 return column;
             });
         },

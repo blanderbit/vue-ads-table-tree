@@ -52,11 +52,11 @@ export default {
     },
     computed: {
         transformedColumns () {
-            return this.columns.map((colum) => {
-                colum.shortTitle = colum.title.length > COLUMN_TITLE_PROPERTY_LENGTH_LIMIT
-                    ? `${colum.title.slice(0, COLUMN_TITLE_PROPERTY_LENGTH_LIMIT)}...`
-                    : colum.title;
-                return colum;
+            return this.columns.map((column) => {
+                column.shortTitle = column.title.length > COLUMN_TITLE_PROPERTY_LENGTH_LIMIT
+                    ? `${column.title.slice(0, COLUMN_TITLE_PROPERTY_LENGTH_LIMIT)}...`
+                    : column.title;
+                return column;
             });
         },  
     },
