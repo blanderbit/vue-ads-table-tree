@@ -25,7 +25,7 @@
                 <thead>
                     <tr :class="headerRowClasses">
                         <component
-                            class="vue-ads-cursor-pointer"
+                            :class="{ resizable: columnsResizable }"
                             v-for="(column, key) in nonGroupedColumns"
                             :key="key"
                             :is="
@@ -35,6 +35,7 @@
                             :column-index="key"
                             :css-processor="cssProcessor"
                             :sort-icon-slot="sortIconSlot"
+                            :columns-resizable="columnsResizable"
                             @sort="sort"
                             @group="group"
                         >
@@ -136,6 +137,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        columnsResizable: {
+            type: Boolean,
+            default: false,
+        },
     },
     data: () => {
         return {
@@ -205,5 +210,10 @@ export default {
 .vue-ads-fix-table-head thead th {
   position: sticky;
   top: 0;
+}
+
+.resizable {
+  resize: horizontal;
+  overflow: auto;
 }
 </style>

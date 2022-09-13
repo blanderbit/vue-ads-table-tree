@@ -15,6 +15,7 @@
             :manage-table-properties="true"
             :fixed-table-head="true"
             :pagination-with-page-input="true"
+            :columns-resizable="true"
             :call-rows="callRows"
             :call-children="callChildren"
             :call-temp-rows="callTempRows"

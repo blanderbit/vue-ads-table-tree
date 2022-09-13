@@ -35,6 +35,11 @@ export default {
             type: CSSProcessor,
             required: true,
         },
+
+        columnsResizable: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     computed: {
@@ -122,6 +127,13 @@ export default {
                     {
                         class: {
                             'vue-ads-flex': true,
+                            'vue-ads-mr-2': this.columnsResizable,
+                        },
+                        on: {
+                            click: (event) => {
+                                event.stopPropagation();
+                                this.$emit('sort', this.column);
+                            },
                         },
                     },
                     headerContent,

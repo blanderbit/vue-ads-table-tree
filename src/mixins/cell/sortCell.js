@@ -45,14 +45,6 @@ export default {
 
             return createElement(
                 'span',
-                {
-                    on: {
-                        click: (event) => {
-                            event.stopPropagation();
-                            this.$emit('sort', this.column);
-                        },
-                    },
-                },
                 [
                     iconNode,
                 ]

@@ -47,6 +47,7 @@
             :slots="$scopedSlots"
             :manage-table-properties="manageTableProperties"
             :fixed-table-head="fixedTableHead"
+            :columns-resizable="columnsResizable"
             @total-filtered-rows-change="totalFilteredRowsChanged"
             @export="exportTable"
             @selection-change="selectionChanged"
@@ -193,6 +194,11 @@ export default {
         },
 
         fixedTableHead: {
+            type: Boolean,
+            default: false,
+        },
+
+        columnsResizable: {
             type: Boolean,
             default: false,
         },
