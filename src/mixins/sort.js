@@ -1,3 +1,5 @@
+import { isValidDate } from '@/utils/utils';
+
 export default {
     computed: {
         sortedRows () {
@@ -23,7 +25,7 @@ export default {
 
             this.sortColumns
                 .forEach(column => {
-                    let direction = column.direction ? 1 : -1;
+                    const direction = column.direction ? 1 : -1;
                     rows.sort((rowA, rowB) => {
                         let sortValueA = rowA[column.property];
                         let sortValueB = rowB[column.property];
@@ -34,6 +36,11 @@ export default {
                         }
 
                         if (typeof sortValueA === 'string' && typeof  sortValueB === 'string') {
+                            if (isValidDate(sortValueA) && isValidDate(sortValueB)) {
+                                return direction > 0
+                                    ? new Date(sortValueA) - new Date(sortValueB)
+                                    : new Date(sortValueB) - new Date(sortValueA);
+                            }
                             return direction * ('' + sortValueA.localeCompare(sortValueB));
                         }
 

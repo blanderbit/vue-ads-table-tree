@@ -3,6 +3,7 @@
         id="app"
     >
         <vue-ads-table
+            has-top-slot
             :columns="columns"
             :rows="rows"
             :classes="classes"
@@ -10,7 +11,11 @@
             :page="page"
             :selectable="selectable"
             :exactMatch="true"
-            :isExactMatchCaseSensitive="false"
+            :is-exact-match-case-sensitive="false"
+            :manage-table-properties="true"
+            :fixed-table-head="true"
+            :pagination-with-page-input="true"
+            :columns-resizable="true"
             :call-rows="callRows"
             :call-children="callChildren"
             :call-temp-rows="callTempRows"

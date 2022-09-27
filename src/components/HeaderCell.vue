@@ -35,6 +35,11 @@ export default {
             type: CSSProcessor,
             required: true,
         },
+
+        columnsResizable: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     computed: {
@@ -49,6 +54,9 @@ export default {
                 },
                 this.cssProcessor.process(null, this.columnIndex),
                 this.cssProcessor.process(0, this.columnIndex),
+                {
+                    'vue-ads-bg-white': true,
+                },
             );
         },
 
@@ -63,10 +71,18 @@ export default {
                 'fa-stream': !this.column.grouped,
             };
         },
+
+        headerStyles () {
+            const styles = {};
+            if (this.column.width) {
+                styles.width = `${this.column.width}px`;
+            } 
+            return styles;
+        },
     },
 
     render (createElement) {
-        let headerContent = [
+        const headerContent = [
             createElement(
                 'span',
                 {
@@ -103,6 +119,7 @@ export default {
             'th',
             {
                 class: this.headerClasses,
+                style: this.headerStyles,
             },
             [
                 createElement(
@@ -110,6 +127,13 @@ export default {
                     {
                         class: {
                             'vue-ads-flex': true,
+                            'vue-ads-mr-2': this.columnsResizable,
+                        },
+                        on: {
+                            click: (event) => {
+                                event.stopPropagation();
+                                this.$emit('sort', this.column);
+                            },
                         },
                     },
                     headerContent,

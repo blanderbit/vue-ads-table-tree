@@ -50,6 +50,7 @@ You can install the package via npm or yarn.
 Columns are listed in a column array as plain objects and can have the following arguments:
 
 - `property`: *(type: string, default: `''`)* The corresponding value will be shown in the column for the given row property. 
+- `width`: *(type: number, default: `undefined`)* Specify the column width. Measured in pixels.
 - `title`: *(type: string, default: `''`)* The title that will be shown in the header. 
 - `filterable`: *(type: boolean, default: `false`)* Is this column filterable?
 - `visible`: *(type: boolean, default: `true`)* Is the column visible? Non-visible columns will not interact.
@@ -94,6 +95,7 @@ The latter ones can override the earlier ones:
         - `selectedAndExactMatch`: Style cells exactly matching the filter in selected rows.
            By default, when the style is active, such cells have `#EFF8C7` background color,
            which is a mix of background colors used for matching cells and selected rows.
+        - `manageProperties`: Style the column selection manager.
     - row/column/cell selectors: These selectors are divided by a slash. So you can have a row selector and a column selector. 
     The header row has index 0. The first data row has index 1. Some examples:
         - 'all': select all rows/columns.
@@ -163,6 +165,11 @@ at the top, and highlight the matching cells.
 - `isExactMatchCaseSensitive`: *(type: boolean, default: `false`)* If `true`, exact match is case-sensitive.
 - `start`: *(type: number, default: `undefined`)* The start index to show only a slice of the rows.
 - `end`: *(type: number, default: `undefined`)* The end index to show only a slice of the rows.
+- `has-top-slot`: *(type: boolean, default: `true`)* Render top slot with default content (filter input).
+- `fixed-table-head`: *(type: boolean, default: `false`)* Fix table thead while scrolling.
+- `columns-resizable`: *(type: boolean, default: `false`)* Make table columns resizable.
+- `manage-table-properties`: *(type: boolean, default: `false`)* Show property manager. Allows you to control the visibility of columns.
+- `pagination-with-page-input`: *(type: boolean, default: `false`)* Indicates whether to display an input field (`true`) or buttons (`false`) to navigate to a specific page.
 - `selectable`: *(type: string, default: `undefined`)* Configure whether rows can be selected and how many.
 Accepted values are: `'multi'` to allow selection of multiple rows, `'single'` to allow selecting just one row at a time. If omitted (`undefined`) no rows can be selected unless individually configured so using `_selectable` row property.
 - `slots`: *(type: Object, default: {})* A list of slots that are passed from parent components.

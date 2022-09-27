@@ -24,6 +24,13 @@ export default {
     selectedAndExactMatch: {
         selectedAndExactMatch: true,
     },
+    manageProperties: {
+        'vue-ads-p-2': true,
+        'vue-ads-bg-white': true,
+        'vue-ads-rounded': true,
+        'vue-ads-text-xs': true,
+        'vue-ads-font-bold': true,
+    },
     'all/': {
         'hover:vue-ads-bg-gray-200': true,
     },

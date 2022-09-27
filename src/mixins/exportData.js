@@ -1,7 +1,7 @@
 export default {
     computed: {
         exportColumns () {
-            return this.columns.filter(column => column.export);
+            return this.initialColumns.filter(column => column.export);
         },
     },
 
