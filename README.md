@@ -166,6 +166,7 @@ at the top, and highlight the matching cells.
 - `start`: *(type: number, default: `undefined`)* The start index to show only a slice of the rows.
 - `end`: *(type: number, default: `undefined`)* The end index to show only a slice of the rows.
 - `has-top-slot`: *(type: boolean, default: `true`)* Render top slot with default content (filter input).
+- `has-bottom-slot`: *(type: boolean, default: `true`)* Render bottom slot with default content (pagination input).
 - `fixed-table-head`: *(type: boolean, default: `false`)* Fix table thead while scrolling.
 - `columns-resizable`: *(type: boolean, default: `false`)* Make table columns resizable.
 - `manage-table-properties`: *(type: boolean, default: `false`)* Show property manager. Allows you to control the visibility of columns.
