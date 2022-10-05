@@ -19,7 +19,6 @@
             <table
                 :class="tableClasses"
                 class="vue-ads-w-full vue-ads-font-sans"
-                style="border-collapse: collapse;"
             >
                 <!-- TABLE HEADER -->
                 <thead>

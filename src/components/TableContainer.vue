@@ -60,7 +60,7 @@
                 <slot name="no-rows"></slot>
             </template>
         </vue-ads-table>
-        <slot name="bottom"
+        <slot v-if="hasBottomSlot" name="bottom"
               :total="total"
               :page="page"
               :itemsPerPage="itemsPerPage"
@@ -189,6 +189,11 @@ export default {
         },
 
         hasTopSlot: {
+            type: Boolean,
+            default: true,
+        },
+
+        hasBottomSlot: {
             type: Boolean,
             default: true,
         },

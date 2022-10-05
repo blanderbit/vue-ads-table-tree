@@ -4,6 +4,7 @@
     >
         <vue-ads-table
             has-top-slot
+            has-bottom-slot
             :columns="columns"
             :rows="rows"
             :classes="classes"
