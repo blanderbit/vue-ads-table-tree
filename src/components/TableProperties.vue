@@ -2,7 +2,7 @@
     <div class="vue-ads-relative vue-ads-z-50">
         <div class="vue-ads-properties-card vue-ads-mt-3 vue-ads-absolute vue-ads-shadow-2xl" :class="contentClasses">
             <span>Properties</span>
-            <div class="vue-ads-ml-5 vue-ads-mt-2 vue-ads-mr-2">
+            <div class="vue-ads-ml-3 vue-ads-mt-2 vue-ads-mr-2">
                 <div class="vue-ads-mt-1 vue-ads-flex" v-for="column of transformedColumns" :key="column.property">
                     <input
                         type="checkbox"
@@ -76,6 +76,6 @@ export default {
 
 <style scoped>
 .vue-ads-properties-card {
-  right: 0.25rem;
+  right: 0.5rem;
 }
 </style>
