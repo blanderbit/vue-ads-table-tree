@@ -16,7 +16,7 @@ export default {
         },
 
         sortIconClasses () {
-            if (!this.sortable) {
+            if (!this.sortable || this.column.grouped) {
                 return {};
             }
 
