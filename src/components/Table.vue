@@ -9,7 +9,7 @@
                 <table-properties
                     v-if="isTablePropertiesVisible"
                     :content-classes="cssProcessor.classes.manageProperties"
-                    :columns="columns"
+                    :columns="initialColumns"
                     v-model="checkedColumns"
                     @setCheckedColumns="setCheckedColumns"
                 />
