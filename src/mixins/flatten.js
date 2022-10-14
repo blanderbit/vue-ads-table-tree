@@ -22,16 +22,22 @@ export default {
         },
 
         flatten (rows) {
-            return rows
-                .reduce((flattenedRows, row) => {
-                    return flattenedRows.concat([
-                        row,
-                        ...(row && row._showChildren ? this.flatten(row._meta.visibleChildren.map((row) => ({
-                            ...row,
-                            _isChildren: true,
-                        }))) : []),
-                    ]);
-                }, []);
+            return rows.reduce((flattenedRowsAcc, row) => {
+                const showRowChildren = row._showChildren;
+                if (showRowChildren) {
+                    row._meta.visibleChildren.forEach((child) => {
+                        child._isChildren = true;
+                    });
+                }
+                const flattenedChildren =
+                  showRowChildren && row._meta.visibleChildren.length
+                      ? this.flatten(row._meta.visibleChildren)
+                      : [];
+                return flattenedRowsAcc.concat([
+                    row,
+                    ...flattenedChildren,
+                ]);
+            }, []);
         },
     },
 };
