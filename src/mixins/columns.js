@@ -74,7 +74,9 @@ export default {
         columnsChanged (columns) {
             const visibleColumns = columns.filter((column) => column.visible);
             this.initialColumns = visibleColumns;
-            this.checkedColumns = visibleColumns.map((column) => column.property);
+            if (this.manageTableProperties) {
+                this.checkedColumns = visibleColumns.map((column) => column.property);
+            }
             let maxSortOrder = this.maxSortOrder();
 
             columns.forEach(column => {
