@@ -89,10 +89,14 @@ export default {
         async group (column) {
             column.grouped = !column.grouped;
             if (!column.grouped) {
-                // When column is not grouped, we need to reset `groupParent` value
-                // that we set before in `createGroupRow` method, to avoid unexpected row style issue.
+                //  If column is not grouped, but it was grouped previously, we need to reset groupParent value,
+                //  that we set in `createGroupRow` method before, to avoid rows style issue after ungrouping.
+                //  Based on `groupParent` value we add `padding-left` to rows (see the `parent` computed property in `cell.js` file)
+                //  to show nesting level.
                 this.rows.forEach((row) => {
-                    row._meta.groupParent = 0;
+                    if (row._meta.groupParent > 0) {
+                        row._meta.groupParent = 0;
+                    }
                 });
             }
             column.direction = column.grouped ? !column.direction : null;
