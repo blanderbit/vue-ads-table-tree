@@ -74,7 +74,7 @@ export default {
         },
 
         parent () {
-            let parent = 0;
+            let parent = this.row._meta.parent;
 
             if (this.columnIndex === 0) {
                 parent += this.row._meta.groupParent;

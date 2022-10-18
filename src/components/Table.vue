@@ -10,8 +10,8 @@
                     v-if="isTablePropertiesVisible"
                     :content-classes="cssProcessor.classes.manageProperties"
                     :columns="initialColumns"
-                    v-model="checkedColumns"
-                    @setCheckedColumns="setCheckedColumns"
+                    v-model="checkedTableProperties"
+                    @setCheckedTableProperties="setCheckedTableProperties"
                 />
             </div>
         </div>
@@ -35,6 +35,7 @@
                             :css-processor="cssProcessor"
                             :sort-icon-slot="sortIconSlot"
                             :columns-resizable="columnsResizable"
+                            :have-rows="haveRows"
                             @sort="sort"
                             @group="group"
                         >

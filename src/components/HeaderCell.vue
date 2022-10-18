@@ -40,18 +40,16 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        haveRows: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     computed: {
         headerClasses () {
             return Object.assign(
-                {
-                    'vue-ads-cursor-pointer': [
-                        null,
-                        true,
-                        false,
-                    ].includes(this.column.direction) && this.sortable,
-                },
                 this.cssProcessor.process(null, this.columnIndex),
                 this.cssProcessor.process(0, this.columnIndex),
                 {
@@ -108,7 +106,10 @@ export default {
                     on: {
                         click: (event) => {
                             event.stopPropagation();
-                            this.$emit('group', this.column);
+                            // If there are no rows, don't group by column.
+                            if (this.haveRows) {
+                                this.$emit('group', this.column);
+                            }
                         },
                     },
                 }
@@ -127,7 +128,13 @@ export default {
                     {
                         class: {
                             'vue-ads-flex': true,
-                            'vue-ads-mr-2': this.columnsResizable,
+                            'vue-ads-items-center': true,
+                            'vue-ads-mr-3': this.columnsResizable,
+                            'vue-ads-cursor-pointer': [
+                                null,
+                                true,
+                                false,
+                            ].includes(this.column.direction) && this.sortable,
                         },
                         on: {
                             click: (event) => {

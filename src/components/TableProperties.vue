@@ -68,7 +68,7 @@ export default {
             immediate: true,
         },
         selectedColumns (val) {
-            this.$emit('setCheckedColumns', val);
+            this.$emit('setCheckedTableProperties', val);
         },
     },
 };
@@ -77,5 +77,6 @@ export default {
 <style scoped>
 .vue-ads-properties-card {
   right: 0.5rem;
+  width: max-content;
 }
 </style>

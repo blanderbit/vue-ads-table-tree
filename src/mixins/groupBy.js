@@ -69,7 +69,9 @@ export default {
         },
 
         createGroupRow (value, column, groupedRows, groupLength, groupColumnIndex) {
-            groupedRows.forEach(row => row._meta.groupParent = groupColumnIndex);
+            groupedRows.forEach(groupedRow => {
+                groupedRow._meta.groupParent = groupColumnIndex;
+            });
             groupedRows = this.groupingRows(groupedRows, groupColumnIndex);
 
             let groupRow = {
@@ -86,6 +88,13 @@ export default {
 
         async group (column) {
             column.grouped = !column.grouped;
+            if (!column.grouped) {
+                // When column is not grouped, we need to reset `groupParent` value
+                // that we set before in `createGroupRow` method, to avoid unexpected row style issue.
+                this.rows.forEach((row) => {
+                    row._meta.groupParent = 0;
+                });
+            }
             column.direction = column.grouped ? !column.direction : null;
             column.order = this.maxSortOrder() + 1;
 
