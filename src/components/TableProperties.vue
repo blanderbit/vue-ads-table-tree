@@ -5,11 +5,11 @@
             <div class="vue-ads-ml-3 vue-ads-mt-2 vue-ads-mr-2">
                 <div class="vue-ads-mt-1 vue-ads-flex" v-for="column of transformedColumns" :key="column.property">
                     <input
+                        v-model="selectedColumns"
                         type="checkbox"
                         :id="column.property"
                         :value="column.property"
-                        v-model="selectedColumns"
-                        :disabled="selectedColumns.length === 1 && selectedColumns[0] === column.property"
+                        :disabled="column.disabled"
                     >
                     <label
                         class="vue-ads-ml-2"
@@ -53,6 +53,9 @@ export default {
     computed: {
         transformedColumns () {
             return this.columns.map((column) => {
+                column.disabled =
+                    column.grouped ||
+                    this.selectedColumns.length === 1 && this.selectedColumns[0] === column.property;
                 column.shortTitle = column.title.length > COLUMN_TITLE_PROPERTY_LENGTH_LIMIT
                     ? `${column.title.slice(0, COLUMN_TITLE_PROPERTY_LENGTH_LIMIT)}...`
                     : column.title;
