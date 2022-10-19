@@ -32,6 +32,6 @@ export function interpolateStr (str, data) {
             splitKey[0] = data[splitKey[0]];
             return evalCode(splitKey.join(' '));
         }
-        return (key = data[key]) == null ? '' : key;
+        return (key = data[key]) === null ? '' : key;
     });
 }

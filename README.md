@@ -80,7 +80,8 @@ or a string with brackets {}, which will be parsed later, for example:
 groupBy: (value) => {
   if (value < 100000) {
     return '< 100 000 ({rowsLength} Item{rowsLength > 1 ? "s" : ""})';
-    // It will be parsed into "< 100 000 (2 Items)"
+    // It will be parsed into "< 100 000 (2 Items),
+    // where 2 is actual groupedRows length."
   }
   return value;
 }
