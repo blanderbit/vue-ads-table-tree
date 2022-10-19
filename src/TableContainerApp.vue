@@ -283,15 +283,15 @@ export default {
                 groupable: true,
                 groupBy: (budget) => {
                     if (budget < 100000) {
-                        return '< 100 000';
+                        return '< 100 000 ({rowsLength} Item{rowsLength > 1 ? "s" : ""})';
                     } else if (budget < 200000) {
-                        return '< 200 000';
+                        return '< 200 000 ({rowsLength} Item{rowsLength > 1 ? "s" : ""})';
                     } else if (budget < 300000) {
-                        return '< 300 000';
+                        return '< 300 000 ({rowsLength} Item{rowsLength > 1 ? "s" : ""})';
                     } else if (budget < 400000) {
-                        return '< 400 000';
+                        return '< 400 000 ({rowsLength} Item{rowsLength > 1 ? "s" : ""})';
                     } else {
-                        return '> 400 000';
+                        return '> 400 000 ({rowsLength} Item{rowsLength > 1 ? "s" : ""})';
                     }
                 },
             },

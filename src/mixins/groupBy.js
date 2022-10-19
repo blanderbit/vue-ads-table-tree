@@ -1,5 +1,7 @@
 // TODO how to handle grouped data for async data
 
+import { interpolateStr } from '@/utils/utils';
+
 export default {
     data () {
         return {
@@ -74,6 +76,12 @@ export default {
             });
             groupedRows = this.groupingRows(groupedRows, groupColumnIndex);
 
+            if (column.groupBy instanceof Function) {
+                value = interpolateStr(value, {
+                    rowsLength: groupedRows.length,
+                });
+            }
+            
             let groupRow = {
                 [column.property]: value,
                 _children: groupedRows,
