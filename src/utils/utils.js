@@ -10,7 +10,7 @@ export function isValidDate (value) {
 /**
  * Executes passed code.
  * @param {String} code - Code that should be executed.
- * @returns {*}
+ * @returns {*} - The result of the executed code.
  */
 export function evalCode (code) {
     return new Function(`return ${code}`)();
@@ -21,7 +21,9 @@ export function evalCode (code) {
  * Can parse variables / ternary condition passed in {} brackets.
  * In the future, this function can be improved, this is just an example,
  * so that it is possible to pass variables that need to be parsed in a string.
- * @returns {function(*, *): *}
+ * @param {String} str - The string that should be interpolated.
+ * @param {Object} data - An object that contains the property keys to be interpolated.
+ * @returns {String} - Interpolated string.
  */
 export function interpolateStr (str, data) {
     const regexp = /{([^{]+)}/g;
