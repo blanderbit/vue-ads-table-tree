@@ -1,5 +1,7 @@
 // TODO how to handle grouped data for async data
 
+import { interpolateStr } from '@/utils/utils';
+
 export default {
     data () {
         return {
@@ -69,9 +71,17 @@ export default {
         },
 
         createGroupRow (value, column, groupedRows, groupLength, groupColumnIndex) {
-            groupedRows.forEach(row => row._meta.groupParent = groupColumnIndex);
+            groupedRows.forEach(groupedRow => {
+                groupedRow._meta.groupParent = groupColumnIndex;
+            });
             groupedRows = this.groupingRows(groupedRows, groupColumnIndex);
 
+            if (column.groupBy instanceof Function) {
+                value = interpolateStr(value, {
+                    rowsLength: groupedRows.length,
+                });
+            }
+            
             let groupRow = {
                 [column.property]: value,
                 _children: groupedRows,
@@ -86,6 +96,17 @@ export default {
 
         async group (column) {
             column.grouped = !column.grouped;
+            if (!column.grouped) {
+                //  If column is not grouped, but it was grouped previously, we need to reset groupParent value,
+                //  that we set in `createGroupRow` method before, to avoid rows style issue after ungrouping.
+                //  Based on `groupParent` value we add `padding-left` to rows (see the `parent` computed property in `cell.js` file)
+                //  to show nesting level.
+                this.rows.forEach((row) => {
+                    if (row._meta.groupParent > 0) {
+                        row._meta.groupParent = 0;
+                    }
+                });
+            }
             column.direction = column.grouped ? !column.direction : null;
             column.order = this.maxSortOrder() + 1;
 

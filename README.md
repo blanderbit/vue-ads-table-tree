@@ -66,7 +66,30 @@ Columns are listed in a column array as plain objects and can have the following
 - `hideOnGroup`: *(type: boolean, default: `true` if no `groupedBy` property is set)* Hide the column if the rows are grouped by this column.
 - `groupBy`: *(type: Function)* This function convert the cell value to another value. The row will be grouped by the returned value.
 It has one parameter:
-    - `value`: *(type: mixed)* The default cell value.
+    - `value`: *(type: mixed)* The default cell value.  The `groupBy` function can return just usual string like
+```js
+groupBy: (value) => {
+  if (value < 100000) {
+    return '< 100 000';
+  }
+  return value;
+}
+```    
+or a string with reserved variables in brackets {}, which will be parsed in the usual string, for example:
+```js
+groupBy: (value) => {
+  if (value < 100000) {
+    return '< 100 000 ({rowsLength} Item{rowsLength > 1 ? "s" : ""})';
+    // It will be parsed into "< 100 000 (N Items)",
+    // where `N` is actual groupedRows length.
+    // Notice that string interpolation supports pluralization,
+    // you can use optional operator to detect what number is singular or plural."
+  }
+  return value;
+}
+```
+The following reserved properties can be passed into string:
+- `rowsLength` - describes the length of grouped rows by specific column.
 
 ### <a name="rows"></a>Rows
 Rows are listed in a row array as plain objects. Each object contains the row data and meta data. Meta data is prefixed with a `_`:

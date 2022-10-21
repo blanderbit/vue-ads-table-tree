@@ -10,7 +10,7 @@ export default {
     data () {
         return {
             initialColumns: [],
-            checkedColumns: [],
+            checkedTableProperties: [],
         };
     },
     watch: {
@@ -18,7 +18,7 @@ export default {
             handler: 'columnsChanged',
             immediate: true,
         },
-        checkedColumns (columns) {
+        checkedTableProperties (columns) {
             this.initialColumns = this.initialColumns.map((column) => {
                 column.visible = Boolean(columns.find((checkedColumnProperty) => checkedColumnProperty === column.property));
                 return column;
@@ -67,15 +67,15 @@ export default {
     },
 
     methods: {
-        setCheckedColumns (checkedColumns) {
-            this.checkedColumns = checkedColumns;
+        setCheckedTableProperties (checkedTableProperties) {
+            this.checkedTableProperties = checkedTableProperties;
         },
 
         columnsChanged (columns) {
             const visibleColumns = columns.filter((column) => column.visible);
             this.initialColumns = visibleColumns;
             if (this.manageTableProperties) {
-                this.checkedColumns = visibleColumns.map((column) => column.property);
+                this.checkedTableProperties = visibleColumns.map((column) => column.property);
             }
             let maxSortOrder = this.maxSortOrder();
 

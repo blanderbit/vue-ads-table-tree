@@ -24,6 +24,10 @@ export default {
         loadedRows () {
             return this.rows.filter(row => row);
         },
+
+        haveRows () {
+            return Boolean(this.rows.length);
+        },
     },
 
     methods: {

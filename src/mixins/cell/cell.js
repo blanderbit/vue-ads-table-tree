@@ -74,7 +74,10 @@ export default {
         },
 
         parent () {
-            let parent = 0;
+            // Initially it should be equal to `_meta.parent` value,
+            // to show nesting level for child rows,
+            // otherwise first child rows are at same level as a parent row.
+            let parent = this.row._meta.parent;
 
             if (this.columnIndex === 0) {
                 parent += this.row._meta.groupParent;

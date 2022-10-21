@@ -16,7 +16,7 @@ export default {
         },
 
         sortIconClasses () {
-            if (!this.sortable || this.column.grouped) {
+            if (!this.sortable) {
                 return {};
             }
 
@@ -45,6 +45,14 @@ export default {
 
             return createElement(
                 'span',
+                {
+                    on: {
+                        click: (event) => {
+                            event.stopPropagation();
+                            this.$emit('sort', this.column);
+                        },
+                    },
+                },
                 [
                     iconNode,
                 ]
